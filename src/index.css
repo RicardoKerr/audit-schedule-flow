@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 220 33% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -13,16 +14,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 215 50% 23%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 180 48% 33%;
+    --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 180 48% 52%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -98,4 +92,29 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.calendar-day {
+  @apply relative flex h-10 w-10 items-center justify-center rounded-full p-0 text-sm transition-colors;
+}
+
+.calendar-day.available {
+  @apply bg-audit-light hover:bg-audit-teal hover:text-white cursor-pointer;
+}
+
+.calendar-day.unavailable {
+  @apply text-gray-300 cursor-not-allowed;
+}
+
+.calendar-day.weekend {
+  @apply text-gray-300 cursor-not-allowed bg-gray-100;
+}
+
+.calendar-day.holiday {
+  @apply text-gray-300 cursor-not-allowed bg-gray-100;
+  @apply after:content-[''] after:absolute after:w-full after:h-[1px] after:bg-gray-300 after:top-1/2 after:left-0;
+}
+
+.calendar-day.selected {
+  @apply bg-audit-blue text-white;
 }
