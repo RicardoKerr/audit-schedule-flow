@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export interface Agendamento {
@@ -28,7 +27,7 @@ export const buscarAgendamentosPorEmail = async (email: string): Promise<Agendam
     throw new Error('Não foi possível buscar os agendamentos');
   }
   
-  return data || [];
+  return data as Agendamento[] || [];
 };
 
 export const remarcarAgendamento = async (

@@ -1,5 +1,5 @@
 
-export type BookingStep = 1 | 2 | 3 | 4;
+export type BookingStep = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export interface ClientInfo {
   fullName: string;
