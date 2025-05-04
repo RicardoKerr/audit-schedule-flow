@@ -157,7 +157,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
       <StepNavigation 
         onNext={handleNext} 
         showPrevious={false}
-        nextLabel="Selecionar Data"
+        nextLabel="Agendar"
         isNextDisabled={false}
       />
     </Card>

@@ -1,94 +1,102 @@
 
 import React from 'react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Card } from '@/components/ui/card';
 import { BookingData } from '@/types/booking';
-import { formatDatePtBR } from '@/utils/dateUtils';
-import { CheckCircle, Clock, Calendar, Mail, Phone, FileText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CalendarCheck } from 'lucide-react';
 
 interface BookingCompleteProps {
   booking: BookingData;
   bookingId?: string;
+  onVoltar?: () => void;
 }
 
-const BookingComplete: React.FC<BookingCompleteProps> = ({ booking, bookingId }) => {
-  const subjectLabel = booking.subject === 'financial' 
-    ? 'Auditoria Financeira' 
-    : booking.subject === 'accounting' 
-      ? 'Auditoria Contábil' 
-      : booking.subject === 'fiscal' 
-        ? 'Auditoria Fiscal' 
-        : booking.otherSubject || 'Outro';
+const BookingComplete: React.FC<BookingCompleteProps> = ({ 
+  booking, 
+  bookingId,
+  onVoltar
+}) => {
+  const formatSubject = (subject: string) => {
+    const subjects: Record<string, string> = {
+      financial: "Auditoria Financeira",
+      accounting: "Auditoria Contábil",
+      fiscal: "Auditoria Fiscal",
+      other: booking.otherSubject || "Outro",
+    };
+    return subjects[subject] || subject;
+  };
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return "Não especificado";
+    return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
+  };
 
   return (
-    <Card className="p-6 animate-fade-in">
-      <div className="text-center mb-6">
-        <div className="flex justify-center mb-4">
-          <div className="bg-audit-success/20 p-3 rounded-full">
-            <CheckCircle className="h-10 w-10 text-audit-success" />
-          </div>
+    <Card className="p-6 animate-fade-in space-y-4">
+      <div className="flex flex-col items-center mb-6">
+        <div className="bg-green-100 rounded-full p-3 mb-2">
+          <CalendarCheck className="h-8 w-8 text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold text-audit-blue mb-2">Agendamento Confirmado!</h2>
-        <p className="text-gray-600">
-          Seu agendamento foi confirmado com sucesso. Em breve você receberá um e-mail com todos os detalhes.
+        <h2 className="text-2xl font-bold text-center text-audit-blue">Agendamento Confirmado!</h2>
+        <p className="text-audit-dark/70 text-center mt-2">
+          Seu agendamento foi realizado com sucesso. Enviamos um e-mail de confirmação para {booking.email}.
         </p>
-        {bookingId && (
-          <p className="mt-2 text-sm text-gray-500">
-            ID do agendamento: {bookingId}
-          </p>
-        )}
       </div>
 
-      <div className="bg-audit-light rounded-lg p-5">
-        <h3 className="font-medium text-lg mb-4 text-audit-blue">Detalhes do Agendamento</h3>
+      <div className="border rounded-md p-4 bg-gray-50">
+        <h3 className="font-semibold text-audit-blue mb-3">Detalhes do Agendamento</h3>
         
-        <div className="space-y-4">
-          <div className="flex items-start">
-            <Calendar className="h-5 w-5 mr-3 text-audit-blue flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Data</p>
-              <p>{booking.date ? formatDatePtBR(booking.date) : ''}</p>
-            </div>
+        <div className="space-y-2">
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Nome:</span>
+            <span className="font-medium">{booking.fullName}</span>
           </div>
           
-          <div className="flex items-start">
-            <Clock className="h-5 w-5 mr-3 text-audit-blue flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Horário</p>
-              <p>{booking.time}</p>
-            </div>
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Email:</span>
+            <span className="font-medium">{booking.email}</span>
           </div>
           
-          <div className="flex items-start">
-            <FileText className="h-5 w-5 mr-3 text-audit-blue flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Assunto</p>
-              <p>{subjectLabel}</p>
-            </div>
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Telefone:</span>
+            <span className="font-medium">{booking.phone}</span>
           </div>
           
-          <div className="flex items-start">
-            <Mail className="h-5 w-5 mr-3 text-audit-blue flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Email</p>
-              <p>{booking.email}</p>
-            </div>
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Assunto:</span>
+            <span className="font-medium">{formatSubject(booking.subject)}</span>
           </div>
           
-          <div className="flex items-start">
-            <Phone className="h-5 w-5 mr-3 text-audit-blue flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium">Telefone</p>
-              <p>{booking.phone}</p>
-            </div>
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Data:</span>
+            <span className="font-medium">{formatDate(booking.date)}</span>
           </div>
+          
+          <div className="grid grid-cols-[120px_1fr]">
+            <span className="text-audit-dark/70">Horário:</span>
+            <span className="font-medium">{booking.time || "Não especificado"}</span>
+          </div>
+
+          {bookingId && (
+            <div className="grid grid-cols-[120px_1fr]">
+              <span className="text-audit-dark/70">Código:</span>
+              <span className="font-medium font-mono">{bookingId.substring(0, 8)}</span>
+            </div>
+          )}
         </div>
       </div>
       
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-500">
-          Caso precise alterar ou cancelar seu agendamento, 
-          utilize os links enviados para o seu e-mail.
-        </p>
+      <div className="flex justify-center pt-4">
+        {onVoltar && (
+          <Button 
+            onClick={onVoltar}
+            className="bg-audit-blue hover:bg-audit-blue/90 text-white"
+          >
+            Voltar ao Início
+          </Button>
+        )}
       </div>
     </Card>
   );
